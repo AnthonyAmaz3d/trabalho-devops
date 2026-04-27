@@ -27,7 +27,7 @@ jobs:
       run: |
         pytest test_app.py
         
-- name: Enviar Alerta para o Discord (Semana 6)
+    - name: Enviar Alerta para o Discord (Semana 6)
       if: always()
       run: |
         curl -H "Content-Type: application/json" \
