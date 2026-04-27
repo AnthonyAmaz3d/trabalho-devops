@@ -31,5 +31,5 @@ jobs:
       if: always()
       run: |
         curl -H "Content-Type: application/json" \
-          -d '{"content": "**Novo Update no Repositório!**\n**Status do Build:** ${{ job.status }}\n**Autor:** ${{ github.actor }}"}' \
+          -d '{"content": "**Novo Update no Repositório!**\n**Status do Build:** ${{ job.status }}\n**Autor:** ${{ github.actor }}\n**Mensagem:** ${{ github.event.head_commit.message }}"}' \
           ${{ secrets.DISCORD_WEBHOOK }}
