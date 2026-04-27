@@ -11,17 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    
     - name: Configurar Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-    - name: Instalar dependências
+        
+    - name: Instalar dependências e Pytest
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Teste simples de sintaxe (CI)
+        pip install pytest
+        
+    - name: Executar Testes Unitários (CI)
       run: |
-        python -m py_compile app.py
-    - name: Simular Deploy (CD)
-      run: |
-        echo "Deploy simulado com sucesso no ambiente de produção!"
+        pytest test_app.py
+        
+    - name: Enviar Alerta para o Discord (Semana 6)
+      if: always()
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_WEBHOOK }}
+        message: |
+          **Novo Update no Repositório!**
+          **Projeto:** ${{ github.event.repository.name }}
+          **Status do Build:** ${{ job.status }}
+          **Autor:** ${{ github.actor }}
+          **Mensagem:** ${{ github.event.head_commit.message }}
+          Veja os detalhes aqui: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
