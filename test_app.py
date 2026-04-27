@@ -22,3 +22,5 @@ def test_method_not_allowed():
     tester = app.test_client()
     response = tester.post('/')
     assert response.status_code == 405
+
+# comentário para gerar PR
