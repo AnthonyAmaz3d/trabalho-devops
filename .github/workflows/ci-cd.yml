@@ -27,15 +27,9 @@ jobs:
       run: |
         pytest test_app.py
         
-    - name: Enviar Alerta para o Discord (Semana 6)
+- name: Enviar Alerta para o Discord (Semana 6)
       if: always()
-      uses: appleboy/discord-action@master
-      with:
-        webhook_id: ${{ secrets.DISCORD_WEBHOOK }}
-        message: |
-          **Novo Update no Repositório!**
-          **Projeto:** ${{ github.event.repository.name }}
-          **Status do Build:** ${{ job.status }}
-          **Autor:** ${{ github.actor }}
-          **Mensagem:** ${{ github.event.head_commit.message }}
-          Veja os detalhes aqui: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        curl -H "Content-Type: application/json" \
+          -d '{"content": "**Novo Update no Repositório!**\n**Status do Build:** ${{ job.status }}\n**Autor:** ${{ github.actor }}"}' \
+          ${{ secrets.DISCORD_WEBHOOK }}
